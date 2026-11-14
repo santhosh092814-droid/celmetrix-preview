@@ -58,7 +58,10 @@ p{margin:0}
 
 /* Header */
 header{position:sticky;top:0;z-index:20;background:var(--hdr-bg);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:72px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.nav ul a,.nav .btn{white-space:nowrap}
+@media (max-width:900px){.brand span{letter-spacing:.14em!important}.nav ul a{padding:0 8px!important}.nav .btn{padding:0 14px}}
+@media (max-width:1000px){.nav{gap:10px}.nav ul{gap:0}.nav ul a{padding:0 9px;font-size:14px}.brand{gap:8px}.brand span{font-size:16px}.brand span{letter-spacing:.22em}.nav .btn{padding:0 16px}}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
 .brand span{font-family:var(--display);font-stretch:125%;font-weight:600;letter-spacing:.32em;font-size:18px}
 .nav ul{display:flex;gap:6px;list-style:none;margin:0;padding:0}
@@ -66,7 +69,7 @@ header{position:sticky;top:0;z-index:20;background:var(--hdr-bg);backdrop-filter
 .nav ul a:hover{color:var(--ink);background:var(--paper-2)}
 .nav ul a[aria-current="page"]{color:var(--ink);background:var(--paper-2)}
 .menu-btn{display:none;min-height:44px;min-width:44px;border:1px solid var(--line);background:transparent;border-radius:12px;cursor:pointer;color:var(--ink)}
-@media (max-width:1180px){
+@media (max-width:780px){
   .nav ul,.nav .btn{display:none}
   .menu-btn{display:inline-flex;align-items:center;justify-content:center}
   header.open .nav{flex-wrap:wrap;padding-bottom:16px}
