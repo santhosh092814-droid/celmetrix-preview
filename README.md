@@ -1,5 +1,5 @@
-# Celmetrix website preview
+# Celmetrix website
 
-Temporary preview of the redesigned Celmetrix website, for review before launch. Not indexed by search engines.
+The live website for Celmetrix (celmetrix.com): ultrasound battery testing.
 
-Prepared by ARQ.
+Designed and built by ARQ.

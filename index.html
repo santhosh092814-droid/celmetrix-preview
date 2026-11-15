@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Celmetrix: patent-pending, non-destructive ultrasound battery testing. Battery Testing as a Service, standalone R&amp;D testers and in-line inspection for battery manufacturing. Birmingham, UK.">
+<link rel="canonical" href="https://celmetrix.com/">
 <title>Celmetrix | Ultrasound Battery Testing</title>
 <script>(function(){var t;try{t=localStorage.getItem("celmetrix-theme")}catch(e){}if(!t){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.setAttribute("data-theme",t)})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1361,7 +1362,7 @@ html[data-theme="dark"] .brand img{filter:none}
           <div><small>Innovation hub</small><span>STEAMhouse, Belmont Row, Birmingham B4 7RQ</span></div>
         </div>
       </div>
-      <form id="contactForm" novalidate>
+      <form id="contactForm" novalidate style="position:relative">
         <div class="row">
           <label for="fn">First name<input id="fn" name="fn" autocomplete="given-name" required></label>
           <label for="ln">Last name<input id="ln" name="ln" autocomplete="family-name" required></label>
@@ -1382,6 +1383,7 @@ html[data-theme="dark"] .brand img{filter:none}
           </div>
         </fieldset>
         <label for="msg">What would you like to find out?<textarea id="msg" name="msg"></textarea></label>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <button class="btn btn-primary" type="submit" style="justify-self:start">Send enquiry</button>
         <p class="form-msg" id="formMsg" role="status"></p>
       </form>
@@ -1447,17 +1449,34 @@ html[data-theme="dark"] .brand img{filter:none}
     var o=header.classList.toggle("open"); menuBtn.setAttribute("aria-expanded",String(o));
   });
 
-  // ---- Contact form (demo)
+  // ---- Contact form -> info@celmetrix.com (via FormSubmit)
   var form=document.getElementById("contactForm"), msg=document.getElementById("formMsg");
+  var sendBtn=form.querySelector('button[type="submit"]');
   form.addEventListener("submit",function(e){
     e.preventDefault();
-    var fn=form.fn.value.trim(), em=form.em.value.trim();
+    var fn=form.fn.value.trim(), ln=form.ln.value.trim(), em=form.em.value.trim(), co=form.co.value.trim(), body=form.msg.value.trim();
     if(!fn||!/^\S+@\S+\.\S+$/.test(em)){
       msg.textContent="Add your first name and a valid work email so we can reply.";
       msg.classList.add("show"); return;
     }
-    msg.textContent="Thanks, "+fn+". This is a concept site, so nothing was sent. On the live site this goes straight to info@celmetrix.com.";
-    msg.classList.add("show");
+    if(form._honey && form._honey.value){ return; }
+    var interests=[].slice.call(form.querySelectorAll('input[name="interest"]:checked')).map(function(i){return i.parentNode.textContent.trim();});
+    var data={"Name":(fn+" "+ln).trim(),"Email":em,"Company":co||"-","Interested in":interests.join(", ")||"-","Message":body||"-",
+      "_subject":"Website enquiry from "+(fn+" "+ln).trim()+(co?" ("+co+")":""),"_replyto":em,"_template":"table"};
+    sendBtn.disabled=true; sendBtn.textContent="Sending…";
+    msg.textContent="Sending your enquiry…"; msg.classList.add("show");
+    fetch("https://formsubmit.co/ajax/info@celmetrix.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data)})
+      .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
+      .then(function(res){
+        if(res.ok && String(res.j.success)!=="false"){
+          msg.textContent="Thanks, "+fn+". Your enquiry has been sent to the Celmetrix team and we'll reply to "+em+" soon.";
+          form.reset();
+        } else { throw new Error("send failed"); }
+      })
+      .catch(function(){
+        msg.textContent="Sorry, your enquiry didn't send. Please try again, or email us directly at info@celmetrix.com.";
+      })
+      .then(function(){ sendBtn.disabled=false; sendBtn.textContent="Send enquiry"; });
   });
 
   // ---- Hero scan animation
